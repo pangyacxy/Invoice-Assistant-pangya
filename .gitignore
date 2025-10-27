@@ -7,3 +7,21 @@ test_*.html
 .DS_Store
 Thumbs.db
 
+# 开发文档（不需要部署）
+UPDATE_*.md
+BUGFIX_*.md
+CHANGELOG*.md
+IMPLEMENTATION_*.md
+PROGRESS_*.md
+REFACTOR_*.md
+COMPLETED_*.md
+FINAL_*.md
+FIX_*.md
+TESTING_*.md
+START_HERE.md
+QUICK_START_*.md
+DEPLOY.md
+USAGE.md
+PROJECT_STRUCTURE.md
+PROMPTS.md
+
