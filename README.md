@@ -149,11 +149,14 @@ ability: { totalDays, currentDay, path: { chapters } }
 
 ## 🚀 快速开始
 
+### 在线访问
+🌐 **部署地址**: https://pangyacxy.github.io/Ai-Slogan-pangya/
+
 ### 本地运行
 1. 克隆项目
 ```bash
-git clone [项目地址]
-cd dataapp
+git clone https://github.com/pangyacxy/Ai-Slogan-pangya.git
+cd Ai-Slogan-pangya
 ```
 
 2. 配置API Key
@@ -355,9 +358,10 @@ dataapp/
 ---
 
 **项目状态**: ✅ 功能完整，持续优化中  
-**最后更新**: 2025-10-27  
-**版本**: v3.3.0  
-**总代码量**: 8,100+行
+**最后更新**: 2025-10-27 (已部署至GitHub Pages)  
+**版本**: v3.3.1  
+**总代码量**: 8,100+行  
+**在线体验**: https://pangyacxy.github.io/Ai-Slogan-pangya/
 
 ---
 
