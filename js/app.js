@@ -380,33 +380,30 @@ class AbilityApp {
     }
 
     // ========== 访谈功能 - 漫画式对话 ==========
-    showIdentitySelection() {
-        this.showPage('identityPage');
-    }
-
-    submitNickname() {
-        const nicknameInput = document.getElementById('nicknameInput');
-        const nickname = nicknameInput.value.trim();
+    startOnboarding() {
+        // 弹出昵称输入框
+        const nickname = prompt('欢迎来到能力养成所！\n\n请输入你的昵称（至少2个字符）：');
         
-        if (!nickname) {
-            alert('请输入昵称');
+        if (!nickname || nickname.trim().length === 0) {
+            alert('昵称不能为空哦');
             return;
         }
         
-        if (nickname.length < 2) {
+        if (nickname.trim().length < 2) {
             alert('昵称至少要2个字符哦');
             return;
         }
         
-        this.userData.nickname = nickname;
+        // 保存用户信息
+        this.userData.nickname = nickname.trim();
         this.userData.onboarded = true;
         if (!this.userData.joinDate) {
             this.userData.joinDate = new Date().toISOString();
         }
         this.saveUserData();
         
-        // 直接跳转到访谈类型选择页
-        this.showPage('interviewTypePage');
+        // 直接跳转到主页
+        this.goToHome();
     }
 
     async selectInterviewType(type) {
@@ -508,7 +505,7 @@ class AbilityApp {
                 const response = await deepseekAPI.interview(
                     this.interviewRound,
                     message,
-                    this.userData.identity,
+                    null, // 不再使用身份信息
                     this.interviewHistory,
                     this.interviewType,
                     this.questionnaireAnswers || null  // 传递问卷答案
@@ -608,7 +605,7 @@ class AbilityApp {
         
         try {
             const report = await deepseekAPI.generateReport(
-                this.userData.identity,
+                null, // 不再使用身份信息
                 this.interviewHistory,
                 this.interviewType  // 传递访谈类型
             );
@@ -630,7 +627,6 @@ class AbilityApp {
             if (this.interviewType === 'deep') {
                 defaultReport = {
                     type: 'deep',
-                    identity: this.userData.identity === 'worker' ? '打工人' : '大学生',
                     coreValues: ['成长', '真诚', '自由'],
                     personalityTraits: '你是一个富有思考力的人，对自己有较高的要求，但有时会因为追求完美而感到焦虑。你渴望被理解，也在努力理解他人。',
                     currentState: '当前处于探索和成长的阶段，虽然有些迷茫，但内心有着清晰的方向感。',
@@ -651,7 +647,6 @@ class AbilityApp {
             } else {
                 defaultReport = {
                     type: 'ability',
-                    identity: this.userData.identity === 'worker' ? '打工人' : '大学生',
                     mainScenario: '在表达和沟通场景中遇到困难',
                     corePain: '想法清晰但表达不出来',
                     emotion: '有些焦虑但愿意改变',
@@ -2287,7 +2282,7 @@ class AbilityApp {
         try {
             // 调用AI生成初步方案
             const plan = await deepseekAPI.generatePlanPreview(
-                this.userData.identity,
+                this.userData.nickname,
                 this.interviewHistory,
                 this.questionnaireAnswers
             );
@@ -2502,7 +2497,7 @@ class AbilityApp {
         try {
             // 调用AI根据对话生成问卷
             const questionnaire = await deepseekAPI.generateQuestionnaire(
-                this.userData.identity,
+                null, // 不再使用身份信息
                 this.interviewHistory
             );
             

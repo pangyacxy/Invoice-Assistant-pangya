@@ -26,13 +26,9 @@
                     <div class="value-icon">🎯</div>
                     <div class="value-text">科学路径帮你成为自己</div>
                 </div>
-                <div class="value-card">
-                    <div class="value-icon">💪</div>
-                    <div class="value-text">社区陪伴帮你坚持自己</div>
-                </div>
             </div>
 
-            <button class="primary-btn" onclick="app.showIdentitySelection()">
+            <button class="primary-btn" onclick="app.startOnboarding()">
                 开始探索自己
             </button>
         </div>
@@ -139,29 +135,6 @@
                         <div class="stat-number" id="statStreak">0</div>
                         <div class="stat-label">最长连续</div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 身份选择页 -->
-    <div id="identityPage" class="page">
-        <div class="page-container">
-            <div class="page-header">
-                <h2>首先，让我了解一下你</h2>
-                <p class="subtitle">选择最符合你当前状态的身份</p>
-            </div>
-
-            <div class="identity-cards">
-                <div class="identity-card" onclick="app.selectIdentity('worker')">
-                    <div class="identity-icon">💼</div>
-                    <h3>打工人</h3>
-                    <p>在职场中想要提升能力</p>
-                </div>
-                <div class="identity-card" onclick="app.selectIdentity('student')">
-                    <div class="identity-icon">🎓</div>
-                    <h3>大学生</h3>
-                    <p>在学习和求职路上探索</p>
                 </div>
             </div>
         </div>

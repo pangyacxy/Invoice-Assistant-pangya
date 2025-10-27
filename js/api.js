@@ -55,7 +55,6 @@ class DeepSeekAPI {
 - 访谈共8-12轮，循序渐进，从浅入深
 - 当你认为已经充分了解用户时，回复"INTERVIEW_COMPLETE"作为结束信号
 
-用户身份：${identity === 'worker' ? '打工人' : '大学生'}
 当前轮数：${round}
 
 可以问的问题方向（但不限于此）：
@@ -85,7 +84,6 @@ class DeepSeekAPI {
             
             systemPrompt = `你是一位温柔、专业、极具洞察力的「能力成长教练」，正在与用户进行一场轻松的访谈。
 ${questionnaireInfo}
-用户身份：${identity === 'worker' ? '打工人' : '大学生'}
 当前轮数：${round}
 
 你的目标：
@@ -175,8 +173,6 @@ ${questionnaireInfo ?
             // 深度访谈报告
             prompt = `根据以下深度访谈记录，对用户做一个全面深入的分析：
 
-用户身份：${identity === 'worker' ? '打工人' : '大学生'}
-
 访谈记录：
 ${interviewHistory.map((msg, i) => `${msg.role === 'assistant' ? 'AI访谈者' : '用户'}：${msg.content}`).join('\n')}
 
@@ -193,7 +189,6 @@ ${interviewHistory.map((msg, i) => `${msg.role === 'assistant' ? 'AI访谈者' :
 请以JSON格式输出：
 {
   "type": "deep",
-  "identity": "打工人/大学生",
   "coreValues": ["价值观1", "价值观2", "价值观3"],
   "personalityTraits": "人格特质描述（200-300字）",
   "currentState": "当前状态描述（150-200字）",
@@ -220,8 +215,6 @@ ${interviewHistory.map((msg, i) => `${msg.role === 'assistant' ? 'AI访谈者' :
                 .join(' ');
             
             prompt = `根据以下用户访谈记录，生成一份「能力画像报告」：
-
-用户身份：${identity === 'worker' ? '打工人' : '大学生'}
 
 访谈记录：
 ${interviewHistory.map((msg, i) => `${msg.role === 'assistant' ? 'AI教练' : '用户'}：${msg.content}`).join('\n')}
@@ -261,7 +254,6 @@ ${interviewHistory.map((msg, i) => `${msg.role === 'assistant' ? 'AI教练' : '�
 请以JSON格式输出：
 {
   "type": "ability",
-  "identity": "打工人/大学生",
   "mainScenario": "主要场景描述",
   "corePain": "核心痛点",
   "emotion": "情绪状态",
@@ -419,8 +411,6 @@ ${interviewHistory.map((msg, i) => `${msg.role === 'assistant' ? 'AI教练' : '�
         
         const prompt = `基于以下用户访谈内容，为用户生成一份针对性的深度调研问卷。
 
-用户身份：${identity === 'worker' ? '打工人' : '大学生'}
-
 访谈对话：
 ${conversationSummary}
 
@@ -511,7 +501,7 @@ ${conversationSummary}
     }
 
     // 生成方案预览（在对话中展示）
-    async generatePlanPreview(identity, interviewHistory, questionnaireAnswers) {
+    async generatePlanPreview(nickname, interviewHistory, questionnaireAnswers) {
         const conversationSummary = interviewHistory
             .filter(msg => msg.role === 'user')
             .map(msg => msg.content)
@@ -520,11 +510,11 @@ ${conversationSummary}
         const questionnaireSummary = questionnaireAnswers ? 
             questionnaireAnswers.filter(a => a).slice(0, 5).join('\n') : '';
         
-        const nickname = identity || '用户';
+        const userNickname = nickname || '用户';
         
         const prompt = `根据以下用户信息，生成一份初步的能力提升方案。
 
-用户昵称：${nickname}
+用户昵称：${userNickname}
 
 对话内容：
 ${conversationSummary}
