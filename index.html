@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="能力养成所 - 你不是不够努力，你只是没看清自己">
+    <title>能力养成所</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 欢迎页 -->
+    <div id="welcomePage" class="page active">
+        <div class="welcome-container">
+            <div class="logo-section">
+                <div class="logo">🌱</div>
+                <h1 class="app-name">能力养成所</h1>
+                <p class="slogan">你不是不够努力<br>你只是没看清自己</p>
+            </div>
+            
+            <div class="value-cards">
+                <div class="value-card">
+                    <div class="value-icon">🔍</div>
+                    <div class="value-text">AI访谈帮你看清自己</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <div class="value-text">科学路径帮你成为自己</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💪</div>
+                    <div class="value-text">社区陪伴帮你坚持自己</div>
+                </div>
+            </div>
+
+            <button class="primary-btn" onclick="app.showIdentitySelection()">
+                开始探索自己
+            </button>
+        </div>
+    </div>
+
+    <!-- 主页 -->
+    <div id="homePage" class="page">
+        <div class="page-container">
+            <!-- 顶部用户信息 -->
+            <div class="home-header">
+                <div class="user-avatar-large">👤</div>
+                <h2 id="homeUserName">你好，朋友！</h2>
+                <button class="profile-btn" onclick="app.goToProfile()">📊 个人中心</button>
+            </div>
+
+            <!-- 进行中的能力 -->
+            <div class="home-section">
+                <h3 class="section-title">正在进行的挑战</h3>
+                <div id="activeAbilities" class="ability-cards">
+                    <!-- 进行中的能力卡片 -->
+                </div>
+                <button class="add-ability-btn" onclick="app.startNewAbility()">
+                    ➕ 开始新的能力挑战
+                </button>
+            </div>
+
+            <!-- 快捷入口 -->
+            <div class="home-section">
+                <h3 class="section-title">快捷入口</h3>
+                <div class="quick-actions">
+                    <div class="quick-action-card" onclick="app.goToTodayTasks()">
+                        <div class="action-icon">✅</div>
+                        <div class="action-name">今日任务</div>
+                        <div class="action-badge" id="todayTaskBadge">0</div>
+                    </div>
+                    <div class="quick-action-card" onclick="app.goToDiary()">
+                        <div class="action-icon">📔</div>
+                        <div class="action-name">成长日记</div>
+                    </div>
+                    <div class="quick-action-card" onclick="app.goToCoachingFromHome()">
+                        <div class="action-icon">🎯</div>
+                        <div class="action-name">阶段辅导</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 个人中心页 -->
+    <div id="profilePage" class="page">
+        <div class="page-container">
+            <div class="profile-header">
+                <button class="back-btn" onclick="app.goToHome()">← 返回</button>
+                <h2>个人中心</h2>
+            </div>
+
+            <!-- 基本信息 -->
+            <div class="profile-section">
+                <h3>基本信息</h3>
+                <div class="profile-card">
+                    <div class="profile-item">
+                        <span class="item-label">昵称</span>
+                        <div class="nickname-edit-section">
+                            <span class="item-value" id="profileNickname">-</span>
+                            <button class="edit-nickname-btn" onclick="app.editNickname()">✏️ 编辑</button>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <span class="item-label">加入时间</span>
+                        <span class="item-value" id="profileJoinDate">-</span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="item-label">总打卡天数</span>
+                        <span class="item-value" id="profileTotalDays">0天</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 能力进度 -->
+            <div class="profile-section">
+                <h3>能力提升记录</h3>
+                <div id="abilityProgress" class="ability-progress-list">
+                    <!-- 能力进度卡片 -->
+                </div>
+            </div>
+
+            <!-- 数据统计 -->
+            <div class="profile-section">
+                <h3>数据统计</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="statCompleted">0</div>
+                        <div class="stat-label">已完成挑战</div>
+                    </div>
+                    <div class="stat-card" onclick="app.goToCoachingFromProfile()">
+                        <div class="stat-number" id="statCoachingCount">0</div>
+                        <div class="stat-label">辅导次数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statDiaries">0</div>
+                        <div class="stat-label">日记数量</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statStreak">0</div>
+                        <div class="stat-label">最长连续</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 身份选择页 -->
+    <div id="identityPage" class="page">
+        <div class="page-container">
+            <div class="page-header">
+                <h2>首先，让我了解一下你</h2>
+                <p class="subtitle">选择最符合你当前状态的身份</p>
+            </div>
+
+            <div class="identity-cards">
+                <div class="identity-card" onclick="app.selectIdentity('worker')">
+                    <div class="identity-icon">💼</div>
+                    <h3>打工人</h3>
+                    <p>在职场中想要提升能力</p>
+                </div>
+                <div class="identity-card" onclick="app.selectIdentity('student')">
+                    <div class="identity-icon">🎓</div>
+                    <h3>大学生</h3>
+                    <p>在学习和求职路上探索</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 访谈类型选择页 -->
+    <div id="interviewTypePage" class="page">
+        <div class="page-container">
+            <div class="page-header">
+                <button class="back-to-home-btn" onclick="app.goToHome()">
+                    ← 返回主页
+                </button>
+                <h2>选择访谈类型</h2>
+                <p class="subtitle">不同的访谈帮助你从不同角度认识自己</p>
+            </div>
+
+            <div class="interview-type-cards">
+                <div class="type-card" onclick="app.selectInterviewType('ability')">
+                    <div class="type-icon">🎯</div>
+                    <h3>能力访谈</h3>
+                    <p>了解你需要提升的能力短板</p>
+                    <div class="type-desc">
+                        <span>• 识别能力短板</span>
+                        <span>• 推荐成长路径</span>
+                        <span>• 制定详细计划</span>
+                    </div>
+                </div>
+                <div class="type-card" onclick="app.selectInterviewType('deep')">
+                    <div class="type-icon">💭</div>
+                    <h3>深度访谈</h3>
+                    <p>深入探索你的内心世界</p>
+                    <div class="type-desc">
+                        <span>• 了解核心价值观</span>
+                        <span>• 分析人格特质</span>
+                        <span>• 发现潜在问题</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI访谈页 -->
+    <div id="interviewPage" class="page">
+        <!-- 访谈页面头部 -->
+        <div class="interview-header">
+            <button class="back-to-home-btn" onclick="app.backToHomeFromInterview()">
+                ← 返回主页
+            </button>
+            <h2 class="interview-title">💬 AI访谈</h2>
+            <div class="interview-header-spacer"></div>
+        </div>
+
+        <div class="interview-scene">
+            <!-- 主容器：垂直布局 -->
+            <div id="interviewMainContainer" class="interview-container vertical-layout">
+                <!-- 上方：聊天区域 -->
+                <div class="interview-chat-container">
+                    <!-- 聊天消息区域 -->
+                    <div class="interview-messages" id="interviewMessages">
+                        <!-- 动态生成聊天消息 -->
+                    </div>
+
+                    <!-- 对话输入区 -->
+                    <div class="interview-input-section">
+                        <!-- AI状态提示 -->
+                        <div id="aiStatusHint" class="ai-status-hint" style="display:none;">
+                            <span class="status-icon">⏳</span>
+                            <span class="status-text">AI 正在思考中...</span>
+                        </div>
+                        
+                        <div class="interview-input-area">
+                            <textarea id="userInput" placeholder="在这里分享你的想法..." rows="3"></textarea>
+                            <div class="interview-input-actions">
+                                <button id="sendBtn" class="send-btn" onclick="app.sendMessage()">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 下方：方案预览区域（默认隐藏） -->
+                <div id="planDisplay" class="plan-display-panel" style="display:none;">
+                    <div class="plan-display-header">
+                        <h3>📋 成长方案预览</h3>
+                        <p class="plan-display-subtitle">这是根据我们的对话为你定制的方案</p>
+                    </div>
+                    <div id="planContent" class="plan-display-content">
+                        <!-- 方案内容将动态插入这里 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 能力画像报告页 -->
+    <div id="reportPage" class="page">
+        <div class="page-container">
+            <div class="report-header">
+                <h2>📊 你的能力画像报告</h2>
+            </div>
+            
+            <div id="reportContent" class="report-content">
+                <!-- 报告内容将动态插入这里 -->
+            </div>
+
+            <div class="report-actions">
+                <button class="primary-btn" onclick="app.acceptPlan()">
+                    接受成长计划
+                </button>
+                <button class="secondary-btn" onclick="app.customizePlan()">
+                    我想自定义
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 路径规划页 -->
+    <div id="pathPage" class="page">
+        <div class="page-container">
+            <div class="page-header">
+                <h2>🎯 你的成长路径</h2>
+                <p class="subtitle" id="pathAbilityName"></p>
+            </div>
+
+            <div id="pathContent" class="path-content">
+                <!-- 路径内容将动态插入这里 -->
+            </div>
+
+            <button class="primary-btn" onclick="app.startJourney()">
+                开始我的旅程
+            </button>
+        </div>
+    </div>
+
+    <!-- 今日任务页 -->
+    <div id="taskPage" class="page">
+        <div class="page-container full-height">
+            <!-- 顶部导航 -->
+            <!-- 顶部导航栏 -->
+            <div class="top-nav-bar">
+                <button class="nav-back-btn" onclick="app.goToHome()">
+                    ← 主页
+                </button>
+                <div class="nav-title" id="navAbilityName">口述表达</div>
+            </div>
+
+            <div class="task-nav">
+                <div class="nav-item active" onclick="app.showTaskView()">
+                    <span>📝</span>
+                    <span>今日任务</span>
+                </div>
+                <div class="nav-item" onclick="app.showTimelineView()">
+                    <span>📅</span>
+                    <span>时间轴</span>
+                </div>
+                <div class="nav-item" onclick="app.showDiaryView()">
+                    <span>📔</span>
+                    <span>成长日记</span>
+                </div>
+            </div>
+
+            <!-- 任务视图 -->
+            <div id="taskView" class="view-content">
+                <div class="day-progress">
+                    <div class="progress-circle">
+                        <span class="day-number" id="currentDay">1</span>
+                        <span class="day-total">/21</span>
+                    </div>
+                    <div class="progress-info">
+                        <h3 id="chapterName">第1章：开口不再尴尬</h3>
+                        <p id="chapterGoal">能完整说出1分钟自我介绍</p>
+                    </div>
+                </div>
+
+                <!-- 今日打卡状态 -->
+                <div id="checkInStatus" class="check-in-status">
+                    <!-- 打卡状态显示 -->
+                </div>
+
+                <div class="today-task-card">
+                    <h3>今日任务</h3>
+                    <div id="taskContent" class="task-detail">
+                        <!-- 任务内容将动态加载 -->
+                    </div>
+                    
+                    <!-- 任务问题 -->
+                    <div id="taskQuestions" class="task-questions">
+                        <!-- 问题将动态加载 -->
+                    </div>
+                    
+                    <!-- 今日小结已删除，使用日记功能代替 -->
+                </div>
+
+                <div id="aiFeedback" class="ai-feedback" style="display:none;">
+                    <!-- AI今日总结将显示在这里 -->
+                </div>
+
+                <button id="checkInBtn" class="primary-btn" onclick="app.checkIn()">
+                    完成今日打卡
+                </button>
+            </div>
+
+            <!-- 时间轴视图 -->
+            <div id="timelineView" class="view-content" style="display:none;">
+                <div class="timeline-container">
+                    <div id="timeline" class="timeline">
+                        <!-- 时间轴将动态生成 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日记视图 -->
+            <div id="diaryView" class="view-content" style="display:none;">
+                <div class="diary-header">
+                    <h3>我的成长日记</h3>
+                    <button class="add-diary-btn" onclick="app.showDiaryEditor()">✍️ 写日记</button>
+                </div>
+                
+                <!-- 日记编辑器 -->
+                <div id="diaryEditor" class="diary-editor" style="display:none;">
+                    <div class="editor-section">
+                        <label>今日心情</label>
+                        <div class="mood-selector" id="moodSelector">
+                            <!-- 心情选择器 -->
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <label>日记内容</label>
+                        <textarea id="diaryContent" placeholder="记录今天的成长和感悟...&#10;&#10;可以写：&#10;- 今天学到了什么&#10;- 遇到了什么困难&#10;- 有什么新的想法" rows="8"></textarea>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <label>添加图片（可选）</label>
+                        <div class="image-upload-area" onclick="app.uploadDiaryImage()">
+                            <div class="upload-placeholder">
+                                📷 点击上传图片
+                            </div>
+                            <div id="diaryImagePreview" class="image-preview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-actions">
+                        <button class="secondary-btn" onclick="app.cancelDiary()">取消</button>
+                        <button class="primary-btn" onclick="app.saveDiary()">保存日记</button>
+                    </div>
+                </div>
+                
+                <!-- 日记列表 -->
+                <div id="diaryList" class="diary-list">
+                    <!-- 日记条目将动态插入 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 记录成长弹窗 -->
+    <div id="growthRecordDialog" class="custom-dialog-overlay" style="display:none;">
+        <div class="custom-dialog growth-record-dialog">
+            <div class="dialog-header">
+                <h3>📝 记录今日成长</h3>
+                <button class="close-dialog-btn" onclick="app.closeGrowthRecordDialog()">×</button>
+            </div>
+            
+            <div class="dialog-body">
+                <div class="editor-section">
+                    <label>关联计划</label>
+                    <input type="text" id="growthRecordAbility" class="ability-input" readonly />
+                </div>
+                
+                <div class="editor-section">
+                    <label>今日心情</label>
+                    <div class="mood-selector" id="moodSelectorGrowth">
+                        <!-- 心情选择器 -->
+                    </div>
+                </div>
+                
+                <div class="editor-section">
+                    <label>成长总结</label>
+                    <div id="growthSummaryLoading" class="summary-loading" style="display:none;">
+                        <div class="loading-spinner"></div>
+                        <p>AI正在总结今日辅导内容...</p>
+                    </div>
+                    <textarea id="growthRecordContent" placeholder="AI正在为你生成今日成长总结..." rows="10" disabled></textarea>
+                </div>
+                
+                <div class="editor-section">
+                    <label>添加图片（可选）</label>
+                    <div class="image-upload-area" onclick="app.uploadGrowthImage()">
+                        <div class="upload-placeholder">
+                            📷 点击上传图片
+                        </div>
+                        <div id="growthImagePreview" class="image-preview"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dialog-actions">
+                <button class="secondary-btn" onclick="app.closeGrowthRecordDialog()">取消</button>
+                <button class="primary-btn" id="saveGrowthBtn" onclick="app.saveGrowthRecord()" disabled>保存到日记</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成长日记独立页面 -->
+    <div id="diaryPage" class="page">
+        <div class="page-container">
+            <!-- 顶部导航栏 -->
+            <div class="top-nav-bar">
+                <button class="nav-back-btn" onclick="app.goToHome()">
+                    ← 主页
+                </button>
+                <div class="nav-title">📔 成长日记</div>
+            </div>
+
+            <div class="diary-standalone-container">
+                <!-- 日记编辑器 -->
+                <div id="diaryEditorStandalone" class="diary-editor" style="display:none;">
+                    <div class="editor-section">
+                        <label>选择关联计划（可选）</label>
+                        <select id="diaryAbilitySelect" class="ability-select">
+                            <option value="">不关联任何计划</option>
+                            <!-- 动态生成计划选项 -->
+                        </select>
+                    </div>
+
+                    <div class="editor-section">
+                        <label>今日心情</label>
+                        <div class="mood-selector" id="moodSelectorStandalone">
+                            <!-- 心情选择器 -->
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <label>日记内容</label>
+                        <textarea id="diaryContentStandalone" placeholder="记录今天的成长和感悟...&#10;&#10;可以写：&#10;- 今天学到了什么&#10;- 遇到了什么困难&#10;- 有什么新的想法" rows="10"></textarea>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <label>添加图片（可选）</label>
+                        <div class="image-upload-area" onclick="app.uploadDiaryImageStandalone()">
+                            <div class="upload-placeholder">
+                                📷 点击上传图片
+                            </div>
+                            <div id="diaryImagePreviewStandalone" class="image-preview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-actions">
+                        <button class="secondary-btn" onclick="app.cancelDiaryStandalone()">取消</button>
+                        <button class="primary-btn" onclick="app.saveDiaryStandalone()">保存</button>
+                    </div>
+                </div>
+
+                <!-- 日记列表 -->
+                <div id="diaryListStandalone" class="diary-list-standalone">
+                    <div class="diary-header">
+                        <h3>我的成长日记</h3>
+                        <button class="add-diary-btn" onclick="app.showDiaryEditorStandalone()">✍️ 写日记</button>
+                    </div>
+                    
+                    <div id="diaryEntriesContainer" class="diary-entries">
+                        <!-- 日记条目将动态插入 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 阶段辅导列表页 -->
+    <div id="coachingListPage" class="page">
+        <div class="page-container">
+            <div class="coaching-list-header">
+                <h1>🎯 阶段辅导</h1>
+                <p class="subtitle">记录你的成长轨迹，AI全程陪伴</p>
+            </div>
+
+            <!-- 辅导计划列表 -->
+            <div id="coachingCards" class="coaching-plans-grid">
+                <!-- 动态生成计划卡片 -->
+            </div>
+
+            <div class="coaching-list-actions">
+                <button class="secondary-btn" onclick="app.goToHome()">
+                    返回主页
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 辅导对话页 -->
+    <div id="coachingChatPage" class="page">
+        <div class="coaching-chat-header">
+            <button class="back-btn" onclick="app.backToCoachingList()">
+                ← 返回
+            </button>
+            <h2>阶段辅导</h2>
+            <div class="coaching-header-actions">
+                <button class="record-growth-btn" onclick="app.recordGrowth()">
+                    📝 记录成长
+                </button>
+            </div>
+        </div>
+
+        <!-- 三栏布局：当前方案 | 新方案对比 | 对话 -->
+        <div class="coaching-triple-layout">
+            <!-- 左侧：当前方案 -->
+            <div class="coaching-plan-panel current-plan">
+                <div class="plan-panel-header">
+                    <h3>📋 当前方案</h3>
+                    <div class="plan-progress" id="currentPlanProgressInfo">
+                        <!-- 动态显示进度 -->
+                    </div>
+                </div>
+                
+                <div class="plan-panel-content" id="currentPlanContent">
+                    <!-- 当前方案详情 -->
+                </div>
+            </div>
+
+            <!-- 中间：新方案对比（默认隐藏） -->
+            <div class="coaching-plan-panel new-plan" id="newPlanPanel" style="display: none;">
+                <div class="plan-panel-header">
+                    <h3>🆕 新方案预览</h3>
+                    <div class="plan-progress" id="newPlanProgressInfo">
+                        <!-- 动态显示新方案进度 -->
+                    </div>
+                </div>
+                
+                <div class="plan-panel-content" id="newPlanContent">
+                    <!-- 新方案详情 -->
+                </div>
+                
+                <div class="plan-panel-actions">
+                    <button class="primary-btn full-width" onclick="app.confirmNewPlan()">
+                        ✅ 确认使用新方案
+                    </button>
+                    <button class="secondary-btn full-width" onclick="app.cancelNewPlan()">
+                        ❌ 继续讨论
+                    </button>
+                </div>
+            </div>
+
+            <!-- 右侧：对话区域 -->
+            <div class="coaching-chat-panel">
+                <div class="coaching-messages" id="coachingMessages">
+                    <!-- 对话消息列表 -->
+                </div>
+
+                <!-- 输入区域 -->
+                <div class="coaching-input-section">
+                    <textarea id="coachingInput" placeholder="说说你的想法..." rows="3"></textarea>
+                    <div class="coaching-input-actions">
+                        <button class="secondary-btn" onclick="app.requestPlanChange()">
+                            💬 讨论修改方案
+                        </button>
+                        <button class="primary-btn" onclick="app.sendCoachingMessage()">
+                            发送
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 能力问卷页 -->
+    <div id="questionnairePage" class="page">
+        <div class="page-container">
+            <div class="page-header">
+                <h2>📋 能力背景调研</h2>
+                <p class="subtitle">帮助我们更全面地了解你</p>
+            </div>
+
+            <div class="questionnaire-intro">
+                <p>在正式访谈前，请花3-5分钟完成这份问卷。这些信息将帮助AI更准确地为你分析和推荐。</p>
+            </div>
+
+            <div id="questionnaireContent" class="questionnaire-content">
+                <!-- 问卷内容将动态生成 -->
+            </div>
+
+            <button class="primary-btn" onclick="app.submitQuestionnaire()">
+                提交问卷，开始访谈
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">AI正在思考...</p>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/abilities.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,9 @@
+# 排除测试文件
+test_*.html
+*.tmp
+*.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
