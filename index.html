@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF发票拼接工具</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * {
@@ -456,7 +455,7 @@
                 <li>上传ZIP压缩包可保证文件顺序（按文件名排序）</li>
                 <li>每两张发票会自动拼接成一张PDF（上下排列）</li>
                 <li>如果是奇数张，最后一页会在下方留空白</li>
-                <li><strong>完全保持原始PDF尺寸</strong>，不缩放、不拉伸、不变形</li>
+                <li><strong>直接复制PDF内容</strong>，不转换图片、不缩放、不改变原始质量</li>
                 <li>拼接完成后会生成多个PDF文件并打包成ZIP压缩包下载</li>
             </ul>
         </div>
@@ -515,9 +514,6 @@
     </div>
 
     <script>
-        // 设置 PDF.js worker
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const fileList = document.getElementById('fileList');
@@ -787,7 +783,7 @@
         async function mergePDFs(files) {
             updateProgress(0, '正在读取PDF文件...');
 
-            const { jsPDF } = window.jspdf;
+            const { PDFDocument } = PDFLib;
             const totalFiles = files.length;
             const pdfBlobs = []; // 存储生成的PDF文件
 
@@ -801,49 +797,69 @@
                     `正在拼接第 ${pdfIndex}/${totalOutputPdfs} 个PDF文件（发票 ${i + 1}-${Math.min(i + 2, totalFiles)}）...`
                 );
 
-                // 读取第一张PDF（上半部分）并获取原始尺寸
-                const img1Data = await pdfToImageWithSize(files[i]);
+                // 创建新的PDF文档
+                const mergedPdf = await PDFDocument.create();
+
+                // 读取第一个PDF
+                const firstPdfBytes = await files[i].arrayBuffer();
+                const firstPdf = await PDFDocument.load(firstPdfBytes);
+                const firstPage = firstPdf.getPage(0);
+                const firstPageSize = firstPage.getSize();
+
+                // 读取第二个PDF（如果存在）
+                let secondPdf = null;
+                let secondPage = null;
+                let secondPageSize = null;
                 
-                // 读取第二张PDF（下半部分，如果存在）
-                let img2Data = null;
                 if (i + 1 < totalFiles) {
-                    img2Data = await pdfToImageWithSize(files[i + 1]);
+                    const secondPdfBytes = await files[i + 1].arrayBuffer();
+                    secondPdf = await PDFDocument.load(secondPdfBytes);
+                    secondPage = secondPdf.getPage(0);
+                    secondPageSize = secondPage.getSize();
                 }
 
-                // 使用原始尺寸，不进行任何缩放
-                const width1 = img1Data.width;
-                const height1 = img1Data.height;
+                // 计算合并后的页面尺寸
+                const maxWidth = secondPageSize 
+                    ? Math.max(firstPageSize.width, secondPageSize.width)
+                    : firstPageSize.width;
                 
-                // 计算输出PDF的尺寸
-                let maxWidth = width1;
-                let totalHeight = height1;
-                
-                if (img2Data) {
-                    maxWidth = Math.max(maxWidth, img2Data.width);
-                    totalHeight += img2Data.height;
-                }
+                const totalHeight = secondPageSize 
+                    ? firstPageSize.height + secondPageSize.height
+                    : firstPageSize.height;
 
-                // 创建新的 PDF，使用实际的尺寸
-                const pdf = new jsPDF({
-                    orientation: totalHeight > maxWidth ? 'portrait' : 'landscape',
-                    unit: 'pt',
-                    format: [maxWidth, totalHeight]
+                // 创建新页面
+                const newPage = mergedPdf.addPage([maxWidth, totalHeight]);
+
+                // 嵌入第一个PDF页面（上半部分）
+                const [firstPageEmbed] = await mergedPdf.embedPages([firstPage]);
+                const x1 = (maxWidth - firstPageSize.width) / 2;
+                const y1 = totalHeight - firstPageSize.height; // 从顶部开始
+                
+                newPage.drawPage(firstPageEmbed, {
+                    x: x1,
+                    y: y1,
+                    width: firstPageSize.width,
+                    height: firstPageSize.height,
                 });
 
-                // 上半部分 - 第一张发票（原始尺寸，不缩放）
-                // 居中放置
-                const x1 = (maxWidth - width1) / 2;
-                pdf.addImage(img1Data.dataUrl, 'PNG', x1, 0, width1, height1, undefined, 'NONE');
-
-                // 下半部分 - 第二张发票（如果存在，原始尺寸，不缩放）
-                if (img2Data) {
-                    const x2 = (maxWidth - img2Data.width) / 2;
-                    const y2 = height1;
-                    pdf.addImage(img2Data.dataUrl, 'PNG', x2, y2, img2Data.width, img2Data.height, undefined, 'NONE');
+                // 嵌入第二个PDF页面（下半部分，如果存在）
+                if (secondPage && secondPageSize) {
+                    const [secondPageEmbed] = await mergedPdf.embedPages([secondPage]);
+                    const x2 = (maxWidth - secondPageSize.width) / 2;
+                    const y2 = totalHeight - firstPageSize.height - secondPageSize.height;
+                    
+                    newPage.drawPage(secondPageEmbed, {
+                        x: x2,
+                        y: y2,
+                        width: secondPageSize.width,
+                        height: secondPageSize.height,
+                    });
                 }
 
-                // 生成PDF的Blob
-                const pdfBlob = pdf.output('blob');
+                // 生成PDF
+                const pdfBytes = await mergedPdf.save();
+                const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+                
                 pdfBlobs.push({
                     name: `拼接_${String(pdfIndex).padStart(3, '0')}.pdf`,
                     blob: pdfBlob
@@ -889,40 +905,6 @@
             
             // 隐藏进度条
             progressContainer.classList.remove('show');
-        }
-
-        async function pdfToImageWithSize(file) {
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            const page = await pdf.getPage(1);
-
-            // 获取页面的原始尺寸（以点为单位，72 DPI）
-            const viewport = page.getViewport({ scale: 1.0 });
-            const originalWidth = viewport.width;
-            const originalHeight = viewport.height;
-
-            // 渲染时使用高分辨率，但保持原始尺寸比例
-            const renderScale = 2.0; // 提高渲染质量
-            const renderViewport = page.getViewport({ scale: renderScale });
-
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = renderViewport.width;
-            canvas.height = renderViewport.height;
-
-            await page.render({
-                canvasContext: context,
-                viewport: renderViewport
-            }).promise;
-
-            const dataUrl = canvas.toDataURL('image/png');
-
-            // 返回图像数据和原始尺寸（不是渲染尺寸）
-            return {
-                dataUrl: dataUrl,
-                width: originalWidth,    // 原始宽度（点）
-                height: originalHeight   // 原始高度（点）
-            };
         }
 
         function updateProgress(percent, text) {
