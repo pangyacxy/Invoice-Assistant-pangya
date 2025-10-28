@@ -1,368 +1,154 @@
-# 能力养成所 - AI驱动的个人成长H5应用
+# 🦆 PDF发票拼接工具 | Invoice Assistant
 
-> 通过AI技术，提供"识别 → 规划 → 执行 → 反馈 → 成长"的完整能力提升闭环
+[![GitHub Pages](https://img.shields.io/badge/demo-online-brightgreen)](https://pangyacxy.github.io/Invoice-Assistant-pangya/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Made with Love](https://img.shields.io/badge/made%20with-❤️-red.svg)](https://github.com/pangyacxy)
 
----
+> 💕 爱来自胖鸭没有肉
 
-## 🎯 项目简介
+一个简单易用的PDF发票拼接工具，支持批量处理，完全保持原始尺寸，不缩放不变形！
 
-**能力养成所**是一款基于AI技术的个人能力提升H5应用，通过智能访谈识别用户能力短板，生成个性化成长计划，配合每日打卡、阶段辅导和成长记录，帮助用户系统化地提升目标能力。
+## 🌟 在线体验
 
-### 核心特色
-- 🤖 **AI全流程赋能**：智能访谈、动态问卷、计划生成、实时辅导、成长总结
-- 📊 **科学成长路径**：21-90天灵活计划，分阶段循序渐进
-- 💪 **持续激励机制**：打卡评分、低分预警、辅导引导
-- 🎯 **高度个性化**：零基础识别、难度自适应、计划动态调整
+**[🚀 立即使用 →](https://pangyacxy.github.io/Invoice-Assistant-pangya/)**
 
----
+## ✨ 主要特性
 
-## ✨ 核心功能
+- 🎯 **保持原样** - 完全保持原始PDF尺寸，不缩放、不拉伸、不变形
+- 📦 **ZIP支持** - 上传ZIP压缩包，自动解压并按文件名排序
+- 🔄 **批量处理** - 一次处理最多100个PDF文件
+- 📝 **智能拼接** - 每两张PDF自动拼接成一张（上下排列）
+- 💾 **打包输出** - 拼接完成后自动打包成ZIP下载
+- 🔒 **隐私安全** - 完全在浏览器本地处理，不上传服务器
+- 🎨 **美观界面** - 现代化设计，流畅的用户体验
 
-### 1. 🎤 AI访谈系统
-- 双模式访谈（能力/深度）
-- 多轮智能对话
-- 动态问卷生成（20题）
-- 零基础快速通道
+## 📖 使用方法
 
-### 2. 📋 成长计划系统
-- 灵活天数设定（21-90天）
-- 分阶段任务设计（3个阶段）
-- 计划实时预览与调整
-- AI智能生成
+### 方法一：上传ZIP压缩包（推荐）
 
-### 3. ✅ 每日打卡系统
-- 真实日期校验
-- 智能评分算法（0-100分）
-- 低分预警（<60分）
-- 引导至辅导
+1. 将所有PDF发票文件放入文件夹
+2. 按顺序命名：`001.pdf`, `002.pdf`, `003.pdf`...
+3. 压缩成ZIP格式
+4. 上传到工具
+5. 点击"开始拼接"
+6. 下载生成的ZIP文件
 
-### 4. 💬 阶段辅导系统
-- AI全程陪伴
-- 理解用户需求
-- 动态调整计划（天数+任务）
-- 三栏对比视图
+### 方法二：直接上传多个PDF
 
-### 5. 📝 记录成长功能 ⭐ 最新
-- 一键生成成长日记
-- AI智能总结对话
-- 4维度总结（收获、行动、感受、下一步）
-- 自动关联计划
+1. 点击上传区域
+2. 按住 Ctrl/Cmd 选择多个PDF文件
+3. 文件会自动按文件名排序
+4. 点击"开始拼接"
+5. 下载生成的ZIP文件
 
-### 6. 📔 成长日记系统
-- 独立日记页面
-- 可选关联计划
-- 心情选择（8种）
-- 多图上传支持
+## 🎯 拼接规则
 
----
-
-## 🛠️ 技术架构
-
-### 技术栈
-- **前端**：HTML5 + CSS3 + JavaScript (Vanilla JS)
-- **AI引擎**：DeepSeek API
-- **数据存储**：LocalStorage
-- **架构模式**：SPA单页应用
-
-### 核心技术
-- **AI集成**：6个AI场景方法，精细化Prompt设计
-- **智能对话**：上下文管理、意图识别、动态生成
-- **数据建模**：主表-子表模式，确保数据一致性
-- **评分算法**：多维度评估（完成度+质量度+反思度）
-- **响应式设计**：移动端优先，完全自适应
-
----
-
-## 📊 项目指标
-
-### 代码量
-- JavaScript: **3,300+** 行
-- CSS: **4,200+** 行
-- HTML: **600+** 行
-- **总计: 8,100+** 行
-
-### 功能模块
-- 核心功能模块：**12个**
-- 业务方法：**83个**
-- AI集成场景：**6个**
-
-### 开发历程
-- 版本迭代：**30+** 个
-- 技术文档：**30+** 份
-- 开发周期：**6周**
-
----
-
-## 🎓 技术亮点
-
-### 1. AI Prompt工程
-精心设计的多场景提示词，覆盖访谈、问卷、计划、辅导、总结等场景。
-
-**示例：辅导总结Prompt**
 ```
-任务：根据今天的辅导对话，生成成长日记
+输入：100张PDF (001.pdf ~ 100.pdf)
+输出：50个拼接后的PDF，打包成ZIP
 
-要求：
-1. 总结今日收获（新认知、新理解）
-2. 记录关键行动（计划、调整）
-3. 情感与感受（情绪、困惑、突破）
-4. 下一步方向（接下来关注什么）
+第1、2张 → 拼接_001.pdf
+第3、4张 → 拼接_002.pdf
+第5、6张 → 拼接_003.pdf
+...
+第99、100张 → 拼接_050.pdf
 
-风格：第一人称、真诚、具体、300-500字
+如果是奇数张，最后一个PDF只包含一张
 ```
 
-### 2. 零基础识别
-AI自动识别用户水平（零基础/有基础），调整流程和内容难度。
+## 💡 技术特点
 
-```javascript
-const isZeroBase = conversationText.includes('零基础') || 
-                   conversationText.includes('完全不会');
+- **前端技术**：纯HTML + JavaScript
+- **PDF处理**：PDF.js 3.11.174
+- **PDF生成**：jsPDF 2.5.1
+- **ZIP处理**：JSZip 3.10.1
+- **尺寸保持**：读取原始PDF尺寸，精确拼接
+- **渲染质量**：2倍分辨率渲染，保证清晰度
 
-if (isZeroBase) {
-    // 跳过详细问卷，直接生成基础友好计划
-    this.createAbilityFromPlan();
-}
-```
+## 📊 性能参考
 
-### 3. 智能评分算法
-多维度评估打卡质量，加权计算最终得分。
+| 文件数量 | 预计处理时间 | 输出文件数 |
+|---------|-------------|-----------|
+| 10张    | ~10秒       | 5个PDF    |
+| 50张    | ~50秒       | 25个PDF   |
+| 100张   | ~2分钟      | 50个PDF   |
 
-```javascript
-// 完成度 40% + 质量度 30% + 反思度 30%
-score = completionScore(40%) + qualityScore(30%) + reflectionScore(30%)
-```
+## 🔧 本地运行
 
-### 4. 数据一致性管理
-主表-子表模式，确保所有页面从统一数据源读取。
-
-```javascript
-// 主表：ability对象
-ability: { totalDays, currentDay, path: { chapters } }
-
-// 子表：各页面动态读取
-- 首页：ability.currentDay / ability.totalDays
-- 任务页：getCurrentDayInfo(ability, currentDay)
-- 辅导页：displayCurrentPlan(ability)
-```
-
----
-
-## 🚀 快速开始
-
-### 在线访问
-🌐 **部署地址**: https://pangyacxy.github.io/Ai-Slogan-pangya/
-
-### 本地运行
-1. 克隆项目
 ```bash
-git clone https://github.com/pangyacxy/Ai-Slogan-pangya.git
-cd Ai-Slogan-pangya
+# 克隆仓库
+git clone https://github.com/pangyacxy/Invoice-Assistant-pangya.git
+
+# 进入目录
+cd Invoice-Assistant-pangya
+
+# 直接用浏览器打开
+# Windows
+start invoice_merger.html
+
+# Mac
+open invoice_merger.html
+
+# Linux
+xdg-open invoice_merger.html
 ```
 
-2. 配置API Key
-编辑 `js/config.js`，设置你的DeepSeek API Key：
-```javascript
-const CONFIG = {
-    API_KEY: 'your-deepseek-api-key',
-    // ...
-};
-```
+或者使用本地服务器：
 
-3. 启动服务
-使用任意HTTP服务器，例如：
 ```bash
-# Python
+# Python 3
 python -m http.server 8000
 
-# Node.js
+# Node.js (需要安装 http-server)
 npx http-server
 
-# VS Code Live Server
-右键 index.html → Open with Live Server
+# 然后访问 http://localhost:8000
 ```
 
-4. 访问应用
-打开浏览器访问 `http://localhost:8000`
+## 📁 文件说明
+
+- `invoice_merger.html` - 主工具文件
+- `invoice_merger_README.md` - 详细使用说明
+- `invoice_merger_EXAMPLE.md` - 使用示例和场景
+- `invoice_merger_TEST.md` - 测试验证指南
+- `invoice_merger_更新说明.md` - 版本更新说明
+
+## 🌐 浏览器兼容性
+
+- ✅ Chrome 90+
+- ✅ Edge 90+
+- ✅ Firefox 88+
+- ✅ Safari 14+
+
+## 💖 关于作者
+
+**爱来自胖鸭没有肉** 🦆
+
+- GitHub: [@pangyacxy](https://github.com/pangyacxy)
+- 项目主页: [Invoice-Assistant-pangya](https://github.com/pangyacxy/Invoice-Assistant-pangya)
+
+## 📝 许可证
+
+本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+1. Fork 本仓库
+2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交你的修改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启一个 Pull Request
+
+## ⭐ Star History
+
+如果这个工具帮到了你，请给个 Star ⭐️ 支持一下！
 
 ---
 
-## 📁 项目结构
-
-```
-dataapp/
-├── index.html              # 主HTML文件
-├── css/
-│   └── style.css          # 样式文件（4200+行）
-├── js/
-│   ├── app.js             # 应用主逻辑（3300+行）
-│   ├── api.js             # AI API封装（900+行）
-│   └── config.js          # 配置文件
-├── images/                # 图片资源
-└── docs/                  # 技术文档
-    ├── PROJECT_OVERVIEW_AND_ACHIEVEMENTS.md
-    ├── PROJECT_PRESENTATION_OUTLINE.md
-    └── UPDATE_v*.md       # 版本更新文档
-```
-
----
-
-## 📖 文档
-
-### 项目文档
-- [完整项目概览与成就记录](PROJECT_OVERVIEW_AND_ACHIEVEMENTS.md)
-- [项目汇报PPT大纲](PROJECT_PRESENTATION_OUTLINE.md)
-
-### 技术文档
-- [v3.3.0 记录成长功能](UPDATE_v3.3.0_RECORD_GROWTH.md)
-- [v3.2.2 日记重构](BUGFIX_v3.2.2_DIARY_REFACTOR.md)
-- [v3.2.1 导航修复](BUGFIX_v3.2.1_NAVIGATION.md)
-- [v3.2.0 辅导重构](REFACTOR_v3.2.0_COACHING_SYSTEM.md)
-- [更多版本文档...](docs/)
-
----
-
-## 🎯 使用流程
-
-```
-1. 注册/登录
-    ↓
-2. 开始AI访谈
-    ├─ 选择访谈类型（能力/深度）
-    ├─ AI多轮对话了解情况
-    ├─ 完成动态问卷（可选）
-    └─ 生成能力报告
-    ↓
-3. 查看成长计划
-    ├─ 查看AI生成的计划
-    ├─ 与AI讨论调整
-    └─ 确认开始挑战
-    ↓
-4. 每日打卡
-    ├─ 回答3个核心问题
-    ├─ 查看评分
-    └─ 低分时引导至辅导
-    ↓
-5. 阶段辅导
-    ├─ 与AI讨论进展
-    ├─ AI调整计划
-    └─ 记录今日成长
-    ↓
-6. 成长日记
-    ├─ 查看所有日记
-    ├─ 手动写日记
-    └─ 查看成长轨迹
-```
-
----
-
-## 🌟 项目亮点
-
-### 技术创新
-- ✅ AI Prompt工程深度应用
-- ✅ 动态内容全AI生成
-- ✅ 智能对话上下文管理
-- ✅ 零基础自适应流程
-- ✅ 数据一致性管理
-
-### 产品特色
-- ✅ 完整的成长闭环
-- ✅ AI全流程赋能
-- ✅ 高度个性化定制
-- ✅ 科学的方法论
-- ✅ 即时反馈机制
-
-### 用户价值
-- ✅ 降低学习门槛
-- ✅ 科学的成长路径
-- ✅ 持续的激励反馈
-- ✅ 可视化的成长追踪
-- ✅ AI智能陪伴
-
----
-
-## 📝 版本历史
-
-### v3.3.0 (2025-10-27) - 当前版本
-- ✅ 新增"记录成长"功能
-- ✅ 删除冗余的"新建辅导"按钮
-- ✅ 优化辅导页面布局
-
-### v3.2.2 (2025-10-27)
-- ✅ 重构成长日记为独立页面
-- ✅ 支持可选关联计划
-- ✅ 优化日记列表显示
-
-### v3.2.1 (2025-10-27)
-- ✅ 修复辅导导航逻辑
-- ✅ 优化返回按钮功能
-
-### v3.2.0 (2025-10-27)
-- ✅ 重构辅导系统（一个计划一个会话）
-- ✅ 新增首页删除计划功能
-
-### v3.1.x - v3.0.0
-- 零基础识别、灵活天数、AI调整计划
-- 打卡评分、低分预警
-- 访谈优化、计划生成
-
-### v2.x
-- AI访谈系统、动态问卷
-- 基础打卡、日记功能
-
-### v1.0
-- 项目框架、基础UI
-
----
-
-## 👨‍💻 个人能力展示
-
-通过此项目展示的能力：
-
-### 前端开发
-- HTML5/CSS3/JavaScript全栈开发
-- 响应式设计与移动端适配
-- SPA单页应用架构
-
-### AI应用开发
-- AI API集成与封装
-- Prompt工程与优化
-- 智能对话系统设计
-
-### 系统设计
-- 整体架构设计
-- 数据建模与管理
-- 模块化设计
-
-### 产品思维
-- 用户体验设计
-- 功能流程设计
-- 数据驱动决策
-
-### 项目管理
-- 需求分析与拆解
-- 版本迭代管理
-- 问题解决能力
-
----
-
-## 📞 联系方式
-
-如需了解更多信息或进行技术交流，欢迎联系。
-
----
-
-## 📄 许可证
-
-本项目仅用于学习和展示目的。
-
----
-
-**项目状态**: ✅ 功能完整，持续优化中  
-**最后更新**: 2025-10-27 (已部署至GitHub Pages)  
-**版本**: v3.3.1  
-**总代码量**: 8,100+行  
-**在线体验**: https://pangyacxy.github.io/Ai-Slogan-pangya/
-
----
-
-*Built with ❤️ and 🤖 AI*
+<div align="center">
+  Made with ❤️ by <a href="https://github.com/pangyacxy">胖鸭没有肉</a>
+  <br>
+  <sub>© 2025 Invoice Assistant. All rights reserved.</sub>
+</div>
